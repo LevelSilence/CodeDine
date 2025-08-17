@@ -23,3 +23,5 @@ const connectDB = async () => {
 connectDB();
 
 // Define your routes here (later)
+const contentRoutes = require('./routes/content.js');
+app.use('/api/v1/content', contentRoutes);
