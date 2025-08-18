@@ -9,7 +9,6 @@ import Dashboard from "./dashboard";
 export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Load saved theme preference from localStorage and apply 'dark' class to <html>
   useEffect(() => {
     const saved = localStorage.getItem("theme");
     if (saved === "dark") {
@@ -21,18 +20,17 @@ export default function App() {
     }
   }, []);
 
-  // Toggle theme and apply/remove 'dark' class on <html>
   const toggleTheme = () => {
     setIsDarkMode((prev) => {
-      const newValue = !prev;
-      if (newValue) {
+      const next = !prev;
+      if (next) {
         document.documentElement.classList.add("dark");
         localStorage.setItem("theme", "dark");
       } else {
         document.documentElement.classList.remove("dark");
         localStorage.setItem("theme", "light");
       }
-      return newValue;
+      return next;
     });
   };
 
@@ -44,7 +42,6 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        {/* Add more routes as needed */}
       </Routes>
     </Router>
   );
