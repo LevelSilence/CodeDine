@@ -1,47 +1,48 @@
 const Category = require('../models/category');
-const Question = require('../models/question');
+const questions = require('../models/question');
 
 exports.getContent = async (req, res) => {
   try {
-    const { search, page = 1, limit = 10, sortBy } = req.query;
-    let query = {};
+    const { search = "", page = 1, limit = 10, sortBy } = req.query;
 
-    // Build query for category title or questions' title search (optional)
-    if (search) {
-      // For example: search categories by title or questions by title
-      query = {
-        $or: [
-          { title: { $regex: search, $options: 'i' } },
-          { 'questions.title': { $regex: search, $options: 'i' } }
-        ]
-      };
+    // Build category search query (case-insensitive regex)
+    const categoryQuery = {
+      title: { $regex: search, $options: "i" },
+    };  
+
+    // Find matching categories, populate matching questions
+    let query = Category.find(categoryQuery).populate({
+      path: "questions",
+      match: { title: { $regex: search, $options: "i" } },
+    });
+
+    // Apply sort if requested
+    if (sortBy === "name") {
+      query = query.sort({ title: 1 });
     }
 
-    // Pagination calculation
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    // Pagination
+    const skip = (page - 1) * limit;
+    query = query.skip(skip).limit(parseInt(limit));
 
-    // Build mongoose query for categories and populate questions
-    let categoryQuery = Category.find(query)
-      .populate('questions')
-      .skip(skip)
-      .limit(parseInt(limit));
+    const categories = await query.exec();
 
-    // Sorting on category title or questions' title if needed
-    if (sortBy === 'name' || sortBy === 'title') {
-      categoryQuery = categoryQuery.sort({ title: 1 });
-    }
+    // Count total matching categories for pagination info
+    const total = await Category.countDocuments(categoryQuery);
 
-    const categories = await categoryQuery.exec();
-    const total = await Category.countDocuments(query);
+    // Filter out categories which have neither matching title nor matching questions
+    const filteredCategories = categories.filter(
+      (cat) => cat.questions.length > 0 || cat.title.match(new RegExp(search, "i"))
+    );
 
     res.json({
       status: true,
-      data: categories,
+      data: filteredCategories,
       total,
       page: parseInt(page),
-      pages: Math.ceil(total / parseInt(limit))
+      pages: Math.ceil(total / limit),
     });
-  } catch (err) {
-    res.status(500).json({ status: false, error: err.message });
+  } catch (error) {
+    res.status(500).json({ status: false, error: error.message });
   }
 };

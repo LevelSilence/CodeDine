@@ -1,5 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const contentRoutes = require('./routes/content.js');
+const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 require('dotenv').config();
 
 const app = express();
@@ -23,5 +26,10 @@ const connectDB = async () => {
 connectDB();
 
 // Define your routes here (later)
-const contentRoutes = require('./routes/content.js');
 app.use('/api/v1/content', contentRoutes);
+
+
+app.use('/api/v1/auth', authRoutes);
+
+
+app.use('/api/v1/user', userRoutes);
