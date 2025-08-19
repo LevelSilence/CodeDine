@@ -10,7 +10,7 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  const { login } = useContext(AuthContext); // <----- use context
+  const { login } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +32,6 @@ export default function Login() {
         return;
       }
 
-      // Use context to set auth state and localStorage
       login({ name: data.name, email: data.email }, data.token);
 
       setLoading(false);

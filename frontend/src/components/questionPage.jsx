@@ -49,7 +49,6 @@ export default function QuestionsPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 pt-16 pb-16">
       <div className="max-w-3xl mx-auto pt-4 px-4">
-        {/* ---- HERO SECTION ---- */}
         <div className="pt-24 pb-10 text-center">
           <h1 className="text-5xl font-extrabold mb-4 text-indigo-700 dark:text-indigo-400">
             Master Coding Interviews
@@ -73,7 +72,6 @@ export default function QuestionsPage() {
           </div>
         </div>
 
-        {/* ---- SEARCH/SORT/PAGINATION ---- */}
         <SearchBar
           value={searchTerm}
           onChange={(val) => {
@@ -116,7 +114,6 @@ export default function QuestionsPage() {
           </div>
         </div>
 
-        {/* ---- CATEGORIES & QUESTIONS ---- */}
         {loading && (
           <p className="text-center dark:text-gray-200">Loading...</p>
         )}

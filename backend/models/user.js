@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema({
     {
       questionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Question' },
       completed: { type: Boolean, default: false },
-      // Add more fields if needed, e.g., timestamp
     }
   ],
 
@@ -20,7 +19,6 @@ const userSchema = new mongoose.Schema({
 
 // Hash password before saving
 userSchema.pre('save', async function(next) {
-  // Only hash the password if it has been modified (or is new)
   if (!this.isModified('password')) return next();
   try {
     const salt = await bcrypt.genSalt(10);
@@ -31,7 +29,6 @@ userSchema.pre('save', async function(next) {
   }
 });
 
-// Method to compare entered password with hashed password
 userSchema.methods.matchPassword = async function(enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };

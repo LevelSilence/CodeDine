@@ -19,7 +19,6 @@ export default function Navbar({ toggleTheme, isDarkMode }) {
         backdrop-blur-md shadow border-b border-gray-200 dark:border-gray-700"
     >
       <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-        {/* Logo / Brand */}
         <Link
           to="/"
           className="text-3xl md:text-4xl font-extrabold text-blue-600 dark:text-blue-400 select-none"
@@ -27,9 +26,7 @@ export default function Navbar({ toggleTheme, isDarkMode }) {
           CodeDine
         </Link>
 
-        {/* Controls */}
         <div className="flex items-center space-x-6 text-lg md:text-xl">
-          {/* Dark/Light Toggle */}
           <button
             onClick={toggleTheme}
             className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none transition"
@@ -42,7 +39,6 @@ export default function Navbar({ toggleTheme, isDarkMode }) {
             )}
           </button>
 
-          {/* Auth Links or User Info */}
           {user ? (
             <>
               <span className="text-gray-900 dark:text-gray-200 font-semibold select-none">

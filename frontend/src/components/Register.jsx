@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext"; // Adjust path if needed
+import { AuthContext } from "../contexts/AuthContext"; 
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -10,7 +10,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext); // <-- Use AuthContext
+  const { login } = useContext(AuthContext); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +32,6 @@ export default function Register() {
         return;
       }
 
-      // Use context login method to save user and token
       login({ name: data.name, email: data.email }, data.token);
 
       setLoading(false);
