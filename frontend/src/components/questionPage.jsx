@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import SearchBar from "./searchbar";
 import Accordion from "./accordion";
-import { fetchCategories } from "../services/api";
 
 export default function QuestionsPage() {
   const [categories, setCategories] = useState([]);
@@ -31,7 +30,14 @@ export default function QuestionsPage() {
       sortBy,
     });
 
-fetchCategories(params)
+    const url = `${import.meta.env.VITE_API_BASE}/api/v1/content?${params}`;
+    console.log("Fetching URL:", url);  // Debug log to confirm URL
+
+    fetch(url)
+      .then((res) => {
+        if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
         setCategories(data.data || []);
         setTotalPages(data.pages || 1);
