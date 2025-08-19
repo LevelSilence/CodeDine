@@ -29,8 +29,10 @@ export default function QuestionsPage() {
       limit,
       sortBy,
     });
-
-    const url = `${import.meta.env.VITE_API_BASE}/api/v1/content?${params}`;
+    const API_BASE =
+      import.meta.env.VITE_API_BASE ||
+      "https://codedine-backend.onrender.com";
+    const url = `${API_BASE}/api/v1/content?${params}`;
     console.log("Fetching URL:", url);  // Debug log to confirm URL
 
     fetch(url)
