@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/authContext";
+import { AuthContext } from "../contexts/tempauthContext";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
 
 export default function Navbar({ toggleTheme, isDarkMode }) {
