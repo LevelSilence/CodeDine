@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import SearchBar from "./searchbar";
 import Accordion from "./accordion";
+import { fetchCategories } from "../services/api";
 
 export default function QuestionsPage() {
   const [categories, setCategories] = useState([]);
@@ -30,11 +31,7 @@ export default function QuestionsPage() {
       sortBy,
     });
 
-    fetch(`/api/v1/content?${params.toString()}`)
-      .then((res) => {
-        if (!res.ok) throw new Error(`Error: ${res.status}`);
-        return res.json();
-      })
+fetchCategories(params)
       .then((data) => {
         setCategories(data.data || []);
         setTotalPages(data.pages || 1);
