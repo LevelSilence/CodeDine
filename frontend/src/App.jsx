@@ -33,7 +33,6 @@ export default function App() {
       return next;
     });
   };
-
   return (
     <Router>
       <Navbar toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
