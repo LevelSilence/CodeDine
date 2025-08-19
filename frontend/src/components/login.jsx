@@ -9,7 +9,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-
   const { login } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
@@ -17,10 +16,13 @@ export default function Login() {
     setError("");
     setLoading(true);
 
+    const API_BASE = import.meta.env.VITE_API_BASE || "https://codedine-backend.onrender.com";
+
     try {
-      const res = await fetch("/api/v1/auth/login", {
+      const res = await fetch(`${API_BASE}/api/v1/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: 'include', // Include credentials if your backend uses cookies/sessions
         body: JSON.stringify({ email, password }),
       });
 

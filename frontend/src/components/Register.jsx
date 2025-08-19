@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { AuthContext } from "../contexts/tempauthContext"; 
+import { AuthContext } from "../contexts/tempauthContext";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -10,17 +10,20 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext); 
+  const { login } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
+    const API_BASE = import.meta.env.VITE_API_BASE || "https://codedine-backend.onrender.com";
+
     try {
-      const res = await fetch("/api/v1/auth/register", {
+      const res = await fetch(`${API_BASE}/api/v1/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: 'include', // include credentials if your backend requires session/cookies
         body: JSON.stringify({ name, email, password }),
       });
 
