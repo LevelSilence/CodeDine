@@ -21,34 +21,39 @@ export default function QuestionsPage() {
     return () => clearTimeout(handler);
   }, [searchTerm]);
 
-  useEffect(() => {
-    setLoading(true);
-    const params = new URLSearchParams({
-      search: debouncedSearchTerm,
-      page,
-      limit,
-      sortBy,
-    });
-    const API_BASE =
-      import.meta.env.VITE_API_BASE ||
-      "https://codedine-backend.onrender.com";
-    const url = `${API_BASE}/api/v1/content?${params}`;
-    console.log("Fetching URL:", url);  // Debug log to confirm URL
 
-    fetch(url)
-      .then((res) => {
-        if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
-        return res.json();
-      })
-      .then((data) => {
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setLoading(true);
+      const params = new URLSearchParams({
+        search: debouncedSearchTerm,
+        page,
+        limit,
+        sortBy,
+      });
+      const API_BASE =
+        import.meta.env.VITE_API_BASE || "https://codedine-backend.onrender.com";
+      const url = `${API_BASE}/api/v1/content?${params}`;
+      console.log("Fetching URL:", url); 
+
+      try {
+        const res = await fetch(url, {
+          credentials: 'include',
+        });
+        if (!res.ok) throw new Error(`Failed to fetch: ${res.status} ${res.statusText}`);
+        const data = await res.json();
         setCategories(data.data || []);
         setTotalPages(data.pages || 1);
-        setLoading(false);
-      })
-      .catch((err) => {
+        setError(null);
+      } catch (err) {
         setError(err.message);
+        setCategories([]);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchCategories();
   }, [debouncedSearchTerm, page, limit, sortBy]);
 
   return (
@@ -119,9 +124,7 @@ export default function QuestionsPage() {
           </div>
         </div>
 
-        {loading && (
-          <p className="text-center dark:text-gray-200">Loading...</p>
-        )}
+        {loading && <p className="text-center dark:text-gray-200">Loading...</p>}
         {error && <p className="text-center text-red-600">{error}</p>}
         {!loading && !error && (
           categories.length === 0 ? (
