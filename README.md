@@ -56,6 +56,3 @@ https://codedine.vercel.app
 - **User Dashboard** – Progress bar & bookmarks UI  
 - **Progress Tracking & Bookmarks** – API is ready but frontend not yet integrated   
 
----
-
-### Backend Setup
